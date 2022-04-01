@@ -1,0 +1,8 @@
+mixin video(video)
+
+  li 
+    h1 
+      a(href=`${routes.video}/${video.id}`) #{video.title}
+    p #{video.description}
+    p #{video.createdAt}
+    p #{video.hashtags}

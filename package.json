@@ -1,0 +1,34 @@
+{
+  "name": "youtube-1",
+  "version": "1.0.0",
+  "description": "## routes",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_PATH=./src nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkp0131/youtube-1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mkp0131/youtube-1/issues"
+  },
+  "homepage": "https://github.com/mkp0131/youtube-1#readme",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.9",
+    "morgan": "^1.10.0",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.8",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "nodemon": "^2.0.15"
+  }
+}

@@ -1,0 +1,8 @@
+extends base
+include mixins/video
+
+block content 
+  h1 HOME
+  ul
+    each video in videos
+      +video(video)
