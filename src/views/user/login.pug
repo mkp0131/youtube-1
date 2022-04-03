@@ -1,0 +1,12 @@
+extends ../base
+block content
+  h1 Login
+  .err-msg=errMsg
+  form(method="POST")
+    input(type="email" name="email" placeholder="이메일을 입력해주세요." required)
+    input(type="password" name="password" placeholder="암호를 입력해주세요." required)
+    button(type="submit") 로그인
+    hr
+    .social-login-container
+      a(href="") Github Login
+      

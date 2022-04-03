@@ -2,6 +2,7 @@
 const HOME = '/';
 const JOIN = '/join';
 const LOGIN = '/login';
+const LOGINOUT = '/loginout';
 const SEARCH = '/search';
 
 // USER
@@ -19,6 +20,9 @@ const SEARCH_VIDEO = '/search';
 
 const routes = {
   home: HOME,
+  join: JOIN,
+  login: LOGIN,
+  logout: LOGINOUT,
   user: USER,
   video: VIDEO,
   editVideo: (id) => {
@@ -36,7 +40,13 @@ const routes = {
     }
   },
   upload: UPLOAD_VIDEO,
-  watch: WATCH_VIDEO,
+  watch: (id) => {
+    if (id) {
+      return `/video/${id}`;
+    } else {
+      return WATCH_VIDEO;
+    }
+  },
   search: SEARCH_VIDEO,
 };
 

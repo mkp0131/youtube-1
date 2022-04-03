@@ -18,8 +18,10 @@
   },
   "homepage": "https://github.com/mkp0131/youtube-1#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.2",
     "express": "^4.17.3",
+    "express-session": "^1.17.2",
     "mongoose": "^6.2.9",
     "morgan": "^1.10.0",
     "pug": "^3.0.2"

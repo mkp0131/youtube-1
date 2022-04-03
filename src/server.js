@@ -5,13 +5,22 @@ import userRouter from 'routers/userRouter';
 import videoRouter from 'routers/videoRouter';
 import bodyParser from 'body-parser';
 import routes from 'routes';
-import { localMiddleware } from 'middleware';
+import { localMiddleware } from 'middlewares';
 import 'db';
+import session from 'express-session';
 
 const app = express();
 const logger = morgan('dev');
 
 app.use(logger);
+
+app.use(
+  session({
+    secret: 'secret key', //암호화하는 데 쓰일 키
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 // form 전송시 사용!
 // html form 을 해석해서 JS object 로 생성

@@ -1,4 +1,5 @@
 import Video from 'models/video';
+import routes from 'routes';
 
 export const home = async (req, res) => {
   let videos = [];
@@ -15,18 +16,33 @@ export const getUpload = (req, res) => {
 };
 export const postUpload = async (req, res) => {
   const { title, description, hashtags } = req.body;
-  await Video.create({
-    title,
-    description,
-    hashtags: Video.formatHashtags(hashtags),
-  });
+  try {
+    await Video.create({
+      title,
+      description,
+      hashtags: Video.formatHashtags(hashtags),
+    });
+  } catch (error) {
+    return res.render('upload', {
+      pageTitle: 'Upload',
+      errMsg: error._message,
+    });
+  }
 
   return res.redirect('/');
 };
 
-export const watch = (req, res) => {
+export const watch = async (req, res) => {
   const id = req.params.id;
-  res.render('watch', { pageTitle: 'Watch', id });
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.render('404', {
+      pageTitle: 'Video is not exist',
+      errMsg: 'Video is not exist',
+    });
+  } else {
+    return res.render('watch', { pageTitle: 'Watch', video });
+  }
 };
 
 export const getEdit = async (req, res) => {
@@ -39,25 +55,36 @@ export const postEdit = async (req, res) => {
   const id = req.params.id;
   const { title, description, hashtags } = req.body;
 
-  const video = await Video.exists({ _id: id });
+  const video = await Video.findById(id);
   if (!video) {
     return res.render('404', { pageTitle: 'Video is not exist' });
   }
-  await Video.findByIdAndUpdate(id, {
-    title,
-    description,
-    hashtags: Video.formatHashtags(hashtags),
-  });
+  try {
+    await Video.findByIdAndUpdate(id, {
+      title,
+      description,
+      hashtags: Video.formatHashtags(hashtags),
+    }).setOptions({ runValidators: true });
+  } catch (error) {
+    return res.render('edit', {
+      pageTitle: 'Edit',
+      errMsg: error._message,
+      video,
+    });
+  }
 
-  res.redirect('/');
+  return res.redirect(`${routes.watch(id)}`);
 };
 
 export const deleteVideo = async (req, res) => {
   const id = req.params.id;
-  console.log(id);
+
   const video = await Video.exists({ _id: id });
   if (!video) {
-    return res.render('404', { pageTitle: 'Video is not exist' });
+    return res.render('404', {
+      pageTitle: 'Video is not exist',
+      errMsg: 'Video is not exist',
+    });
   }
 
   await Video.findOneAndDelete({ _id: id });

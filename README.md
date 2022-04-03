@@ -81,6 +81,7 @@ mongo // mongo shell 접근 // mongodb-community 시작되어야 작동
 - use ${database} // 데이터 베이스이름을 적어주면 데이터 베이스로 switch
 - show collections // 컬렉션 보기
 - db.${coll}.find() // 컬렉션 안에 문서 보기
+- db.${coll}.remove() // 컬렉션 안에 문서 모두 삭제!
 
 ### mongoose
 
@@ -199,6 +200,18 @@ await Video.findByIdAndUpdate(id, {
   description,
   hashtags: Video.formatHashtags(hashtags),
 });
+```
+
+### 🧤🧤🧤 업데이트시 주의사항
+
+- Middleware와 Validator가 호출되지 않는 경우가 있습니다. 이 경우 잘못된 데이터를 DB에 저장하려고 해도 모델을 검사하는 모든 작업을 우회하여 그대로 DB에 때려박을 것입니다. 위와 같은 일은 Mongoose가 ORM을 이용한 데이터 핸들링과 DB에 직접 데이터를 때려박는 두가지 기능을 모두 제공하기 때문에 발생
+- MongoDB에서 findOneAndUpdate()는 findOne()과 update() 쿼리의 조합이 아니라 별개의 쿼리로 실행됩니다. 그리고 Mongoose에서 Query.findByIdAndUpdate() 는 Query.findOneAndUpdate({ \_id: id }, ...) 의 alias입니다
+
+```js
+await User.where({ _id: id })
+  .update({ name: 'Omega' })
+  .setOptions({ runValidators: true }) // 옵션을 사용하여 해결
+  .exec();
 ```
 
 ## 참고

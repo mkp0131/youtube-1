@@ -1,5 +1,13 @@
 extends base
 block content
   h1 Watch
-  a(href=`${routes.editVideo(id)}`) Edit Video 
-  a(href=`${routes.deleteVideo(id)}`) Delete Video 
+  hr
+  div 
+    h2.title=video.title 
+    p.description=video.description
+  hr
+  ul
+    li 
+      a(href=`${routes.editVideo(video.id)}`) Edit Video 
+    li 
+      a(href=`${routes.deleteVideo(video.id)}`) Delete Video 
