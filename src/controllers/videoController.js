@@ -1,9 +1,12 @@
+import User from 'models/User';
 import Video from 'models/video';
 import routes from 'routes';
 
 export const home = async (req, res) => {
   let videos = [];
-  videos = await Video.find().sort({ createdAt: 'desc' });
+  videos = await Video.find()
+    .populate({ path: 'creator', select: 'displayName photoUrl' })
+    .sort({ createdAt: 'desc' });
   res.render('home', { pageTitle: 'Home', videos });
 };
 
@@ -15,13 +18,30 @@ export const getUpload = (req, res) => {
   res.render('upload', { pageTitle: 'Upload' });
 };
 export const postUpload = async (req, res) => {
-  const { title, description, hashtags } = req.body;
+  const {
+    body: { title, description, hashtags },
+    files: { video, thumnail },
+  } = req;
+
+  const videoUrl = video[0].path;
+  const thumnailUrl = thumnail[0].path;
+
+  const creator = req.session.currentUser._id;
+
   try {
-    await Video.create({
+    let uploadVideo = await Video.create({
+      videoUrl,
+      thumnailUrl,
       title,
       description,
+      creator,
       hashtags: Video.formatHashtags(hashtags),
     });
+
+    // 유저에도 데이터 업데이트
+    const user = await User.findOne({ _id: creator });
+    user.videos.push(uploadVideo._id);
+    user.save();
   } catch (error) {
     return res.render('upload', {
       pageTitle: 'Upload',
@@ -34,6 +54,7 @@ export const postUpload = async (req, res) => {
 
 export const watch = async (req, res) => {
   const id = req.params.id;
+  console.log(id);
   const video = await Video.findById(id);
   if (!video) {
     return res.render('404', {
@@ -41,13 +62,20 @@ export const watch = async (req, res) => {
       errMsg: 'Video is not exist',
     });
   } else {
-    return res.render('watch', { pageTitle: 'Watch', video });
+    return res.render('video/watch', { pageTitle: 'Watch', video });
   }
 };
 
 export const getEdit = async (req, res) => {
   const id = req.params.id;
   const video = await Video.findById(id);
+
+  console.log(String(video.creator));
+  console.log(String(req.session.currentUser._id));
+  if (String(video.creator) !== String(req.session.currentUser._id)) {
+    return res.status(403).redirect('/');
+  }
+
   res.render('edit', { pageTitle: 'Edit', video });
 };
 
@@ -56,9 +84,15 @@ export const postEdit = async (req, res) => {
   const { title, description, hashtags } = req.body;
 
   const video = await Video.findById(id);
+
   if (!video) {
     return res.render('404', { pageTitle: 'Video is not exist' });
   }
+
+  if (String(video.creator) !== String(req.session.currentUser._id)) {
+    return res.status(403).redirect('/');
+  }
+
   try {
     await Video.findByIdAndUpdate(id, {
       title,
@@ -79,12 +113,19 @@ export const postEdit = async (req, res) => {
 export const deleteVideo = async (req, res) => {
   const id = req.params.id;
 
-  const video = await Video.exists({ _id: id });
+  const video = await Video.findOne({ _id: id });
+
   if (!video) {
     return res.render('404', {
       pageTitle: 'Video is not exist',
       errMsg: 'Video is not exist',
     });
+  }
+
+  if (String(video.creator) !== String(req.session.currentUser._id)) {
+    console.log(String(video.creator));
+    console.log(String(req.session.currentUser._id));
+    return res.status(403).redirect('/');
   }
 
   await Video.findOneAndDelete({ _id: id });
@@ -100,7 +141,22 @@ export const search = async (req, res) => {
       title: {
         $regex: new RegExp(keyword, 'i'),
       },
-    });
+    })
+      .populate({ path: 'creator', select: 'displayName photoUrl' })
+      .sort({ createdAt: 'desc' });
   }
   res.render('search', { pageTitle: 'Search', videos });
+};
+
+export const registerView = async (req, res) => {
+  const id = req.params.id;
+  const video = await Video.findById(id);
+
+  if (!video) {
+    return res.sendStatus(404);
+  }
+
+  video.meta.views = video.meta.views + 1;
+  await video.save();
+  return res.sendStatus(200);
 };

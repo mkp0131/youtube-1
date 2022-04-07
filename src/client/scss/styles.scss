@@ -1,0 +1,15 @@
+// config
+@import './config/variables';
+@import './config/reset';
+
+// components
+@import './components/shared';
+@import './components/header';
+@import './components/footer';
+@import './components/video';
+
+// screens
+@import './screens/login';
+@import './screens/watch';
+@import './screens/upload';
+@import './screens/profile';

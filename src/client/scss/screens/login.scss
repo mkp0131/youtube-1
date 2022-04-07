@@ -1,0 +1,14 @@
+.social-login-container {
+  padding-top: 2em;
+  margin-top: 2em;
+  border-top: 1px solid $bd1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  a {
+    background: $color2;
+    text-align: center;
+    padding: 1em;
+    border-radius: 4px;
+  }
+}

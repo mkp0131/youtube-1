@@ -1,0 +1,19 @@
+extends ../base
+block content
+  .ct-container.inner
+    h2 프로필
+    .profile-img
+      img(src=`${currentUser.photoUrl || noProfile}`)
+    .btn-profile-container 
+      a(href=`${routes.user}${routes.editProfile}`)
+        i.fa-solid.fa-pen
+        | 프로필 관리
+      a(href="")
+        i.fa-solid.fa-key
+        | 비밀번호 변경
+      a(href=routes.logout)
+        i.fa-solid.fa-arrow-right-from-bracket
+        | 로그아웃
+
+
+      

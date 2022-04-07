@@ -1,12 +1,15 @@
 extends ../base
 block content
-  h1 Login
-  .err-msg=errMsg
-  form(method="POST")
-    input(type="email" name="email" placeholder="이메일을 입력해주세요." required)
-    input(type="password" name="password" placeholder="암호를 입력해주세요." required)
-    button(type="submit") 로그인
-    hr
+  .form-container.inner
+    h2 로그인
+    .err-msg=errMsg
+    form(method="POST")
+      input(type="email" name="email" placeholder="이메일을 입력해주세요." required)
+      input(type="password" name="password" placeholder="암호를 입력해주세요." required)
+      button(type="submit") 로그인
+
     .social-login-container
-      a(href="") Github Login
+      a(href=`${routes.join}`)
+        | 이메일 회원가입
+      a(href=`${routes.user}${routes.startGithubLogin}`) Github 로그인
       

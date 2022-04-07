@@ -1,14 +1,11 @@
 extends ../base
 block content
-  h1 join
-  .err-msg=errMsg
-  form(method="POST")
-    input(type="email" name="email" placeholder="이메일을 입력해주세요." required)
-    input(type="password" name="password" placeholder="암호를 입력해주세요." required)
-    input(type="password" name="password2" placeholder="암호를 다시 한번 입력해주세요." required)
-    input(type="text" name="displayName" placeholder="닉네임을 입력해주세요." )
-    button(type="submit") 회원가입
-    hr
-    .social-login-container
-      a(href="") Github Login
-      
+  .form-container.inner
+    h2 회원가입
+    .err-msg=errMsg
+    form(method="POST")
+      input(type="email" name="email" placeholder="이메일을 입력해주세요." required)
+      input(type="password" name="password" placeholder="암호를 입력해주세요." required)
+      input(type="password" name="password2" placeholder="암호를 다시 한번 입력해주세요." required)
+      input(type="text" name="displayName" placeholder="닉네임을 입력해주세요." )
+      button(type="submit") 회원가입

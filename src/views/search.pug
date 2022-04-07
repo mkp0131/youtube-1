@@ -2,7 +2,6 @@ extends base
 include mixins/video
 
 block content 
-  h1 Search
-  ul
+  ul.video-grid.inner
     each video in videos
       +video(video)

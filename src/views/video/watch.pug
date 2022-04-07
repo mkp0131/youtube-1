@@ -1,0 +1,43 @@
+extends ../base
+block content
+  .watch__inner
+    .watch__video-play-container#videoContainer(data-video-id=video._id)
+      video(src='/' + video.videoUrl)#video
+      .video-play-icon#videoPlayIcon
+        i.fa-solid.fa-circle-play
+      .video-play-icon#videoPlayIcon
+        i.fa-solid.fa-circle-play
+      .video-controls-container#videoControls
+        button.btn-play#btnPlay
+          i.fa-solid.fa-play 
+        input.play-bar#playBar(type="range" step="1" min="0")
+        .play-time-container
+          .play-time#playTime 00:00
+          | / 
+          .play-duration#playDuration 00:00
+        .video-volumn-container 
+          button.btn-mute#btnMute 
+            i.fa-solid.fa-volume-high
+          input#videoVolume(type="range" step='0.1' min="0" max="1")
+        .video-fullscreen-container 
+          button.btn-fullscreen#btnFullsreen
+            i.fa-solid.fa-expand
+    .watch__video-info-container.inner
+      p.video-info__hashtags=video.hashtags
+      .video-info__title=video.title 
+      .video-info__info 
+        .video-info__views 조회수 #{video.meta.views}회
+        .video-info__createdat #{video.createdAt}
+
+    .watch__video-info-container.inner
+      .video-info-description=video.description
+
+    ul.watch__video-edit-container
+      if(String(video.creator )=== String(currentUser._id))
+        li 
+          a(href=`${routes.editVideo(video.id)}`) Edit Video 
+        li 
+          a(href=`${routes.deleteVideo(video.id)}`) Delete Video 
+
+block scripts
+  script(src="/static/js/videoPlayer.js") 

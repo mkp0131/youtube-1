@@ -3,9 +3,12 @@ const { Schema } = mongoose;
 
 // 스키마 정보 생성
 const videoSchema = new Schema({
+  videoUrl: { type: String, required: true },
+  thumnailUrl: { type: String, required: true },
   title: { type: String, required: true, trim: true, maxLength: 10 },
   description: { type: String, required: true, maxLength: 100 },
   createdAt: { type: Date, required: true, default: Date.now },
+  creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   hashtags: [{ type: String, trim: true }],
   meta: {
     views: { type: Number, required: true, default: 0 },

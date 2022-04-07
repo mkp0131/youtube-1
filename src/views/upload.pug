@@ -1,8 +1,23 @@
 extends base
 block content
-  .errMsg=errMsg
-  form(method="POST")
-    input(type="text", name="title" placeholder="제목을 입력해주세요." maxlength="30" required)
-    input(type="text", name="description" placeholder="설명을 입력해주세요." maxlength="100" required)
-    input(type="text" name="hashtags" placeholder="해쉬태그를 입력해주세요." maxlength="100" required)
-    button(type="submit") Upload
+  .form-container.inner
+    h2 비디오 업로드
+    .errMsg=errMsg
+    form(method="POST" enctype="multipart/form-data")
+      label.file-upload.video.js-file-upload
+        input(type="file", name="video" accept="video/mp4" required)
+        .file-name.js-file-name
+          i.fa-solid.fa-video
+          | 비디오 업로드
+      label.file-upload.photo.js-file-upload
+        input(type="file", name="thumnail" accept="image/gif, image/jpeg, image/png" required)
+        .file-name.js-file-name
+          i.fa-solid.fa-image
+          | 썸네일 업로드
+      input(type="text", name="title" placeholder="제목을 입력해주세요." maxlength="30" required)
+      input(type="text", name="description" placeholder="설명을 입력해주세요." maxlength="100" required)
+      input(type="text" name="hashtags" placeholder="해쉬태그를 입력해주세요." maxlength="100" required)
+      button(type="submit") 비디오 업로드
+
+block scripts
+  script(src="/static/js/form.js") 

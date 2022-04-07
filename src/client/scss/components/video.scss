@@ -1,0 +1,25 @@
+.video {
+  .thumnail {
+    padding-bottom: 56.25%;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 1em;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .video__info {
+    padding: 0.5em;
+    .video__title {
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: 0.5em;
+    }
+    .video__info__sub {
+      opacity: 0.5;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+    }
+  }
+}

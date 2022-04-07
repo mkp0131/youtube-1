@@ -8,20 +8,33 @@ import {
   watch,
 } from 'controllers/videoController';
 import express from 'express';
+import { protectorMiddleware, videoUpload } from 'middlewares';
 import routes from 'routes';
 
 const videoRouter = express.Router();
 
 videoRouter.get(routes.video, video);
 
-videoRouter.get(routes.upload, getUpload);
-videoRouter.post(routes.upload, postUpload);
+videoRouter
+  .route(routes.upload)
+  .all(protectorMiddleware)
+  .get(getUpload)
+  .post(
+    videoUpload.fields([
+      { name: 'video', maxCount: 1 },
+      { name: 'thumnail', maxCount: 1 },
+    ]),
+    postUpload
+  );
 
 videoRouter.get(routes.watch(), watch);
 
-videoRouter.get(routes.editVideo(), getEdit);
-videoRouter.post(routes.editVideo(), postEdit);
+videoRouter
+  .route(routes.editVideo())
+  .all(protectorMiddleware)
+  .get(getEdit)
+  .post(postEdit);
 
-videoRouter.get(routes.deleteVideo(), deleteVideo);
+videoRouter.get(routes.deleteVideo(), protectorMiddleware, deleteVideo);
 
 export default videoRouter;

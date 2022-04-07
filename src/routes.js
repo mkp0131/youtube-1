@@ -7,8 +7,11 @@ const SEARCH = '/search';
 
 // USER
 const USER = '/user';
+const PROFILE = '/profile';
 const EDIT_PROFILE = '/edit';
 const DELETE_USER = '/delete';
+const GITHUB_LOGIN_START = '/github/start';
+const GITHUB_LOGIN_FINISH = '/github/finish';
 
 // VIDEO
 const VIDEO = '/video';
@@ -18,12 +21,20 @@ const EDIT_VIDEO = '/:id([0-9a-f]{24})/edit';
 const DELETE_VIDEO = '/:id([0-9a-f]{24})/delete';
 const SEARCH_VIDEO = '/search';
 
+// api
+const API = '/api';
+const VIDEO_VIEWS = '/video/:id([0-9a-f]{24})/view';
+
 const routes = {
   home: HOME,
   join: JOIN,
   login: LOGIN,
   logout: LOGINOUT,
   user: USER,
+  profile: PROFILE,
+  editProfile: EDIT_PROFILE,
+  startGithubLogin: GITHUB_LOGIN_START,
+  finishGithubLogin: GITHUB_LOGIN_FINISH,
   video: VIDEO,
   editVideo: (id) => {
     if (id) {
@@ -48,6 +59,8 @@ const routes = {
     }
   },
   search: SEARCH_VIDEO,
+  api: API,
+  videoViews: VIDEO_VIEWS,
 };
 
 export default routes;

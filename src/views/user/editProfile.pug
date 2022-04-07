@@ -1,0 +1,25 @@
+extends ../base
+block content
+  .form-container.inner
+    h2 프로필 수정
+    .profile-img
+      img(src=`${currentUser.photoUrl}`, width="40", height="40")
+    .btn-profile-container 
+      a(href="")
+        i.fa-solid.fa-pen
+        | 프로필 관리
+      a(href="")
+        i.fa-solid.fa-arrow-right-from-bracket
+        | 로그아웃
+
+
+    form(method="POST" enctype="multipart/form-data")
+      img(src=`${currentUser.photoUrl}`, width="40", height="40")
+      label 
+        input(type="file", name="photo" accept="image/png, image/jpeg")
+      input(type="text" name="displayName" placeholder="닉네임을 입력해주세요." )
+      button(type="submit") 변경하기
+
+    .social-login-container
+      a(href="") 비밀번호 변경
+      

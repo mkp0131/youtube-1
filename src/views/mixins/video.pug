@@ -1,8 +1,13 @@
 mixin video(video)
 
-  li 
-    h1 
-      a(href=`${routes.video}/${video.id}`) #{video.title}
-    p #{video.description}
-    p #{video.createdAt}
-    p #{video.hashtags}
+  li.video
+    a(href=`${routes.video}/${video.id}`)
+      .thumnail(style=`background-image: url(/${video.thumnailUrl || noThumnail});`)
+      .video__info 
+        .video__title #{video.title}
+        .video__info__sub
+          .video__creator
+            .creator-photo
+            | #{video.creator.displayName}
+          .video__views #{video.meta.views} 회
+

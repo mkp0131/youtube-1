@@ -81,7 +81,7 @@ mongo // mongo shell 접근 // mongodb-community 시작되어야 작동
 - use ${database} // 데이터 베이스이름을 적어주면 데이터 베이스로 switch
 - show collections // 컬렉션 보기
 - db.${coll}.find() // 컬렉션 안에 문서 보기
-- db.${coll}.remove() // 컬렉션 안에 문서 모두 삭제!
+- db.${coll}.remove({}) // 컬렉션 안에 문서 모두 삭제!
 
 ### mongoose
 
@@ -168,6 +168,19 @@ await Video.create({
 });
 ```
 
+- 스키마에 데이터 저장시 이벤트 등록해서 사용
+- pre 메소드
+- this 를 통해 저장되는 문서에 접근(🧤🧤🧤 this 를 활용하기 때문에 화살표함수 사용 안됨!)
+- 저장하는 함수에 따라 실행이 안될 수 있음.
+
+```js
+userSchema.pre('save', async function () {
+  if (this.isModified('password')) {
+    this.password = await bcrypt.hash(this.password, 5);
+  }
+});
+```
+
 ### 데이터 조회
 
 - 전체 데이터 조회
@@ -213,6 +226,130 @@ await User.where({ _id: id })
   .setOptions({ runValidators: true }) // 옵션을 사용하여 해결
   .exec();
 ```
+
+## webpack
+
+### 설치 및 세팅
+
+```
+npm i webpack webpack-cli -D
+```
+
+- webpack.config.js
+- webpack 내에 문서에서는 babel 사용불가. 즉, nodejs 기본 문법을 따라야한다.
+- package.json 에 webpack 명령어 추가
+
+```
+assets: "webpack --config webpack.config.js"
+// webpack.config.js 로 사용한다면 wepack 으로도 충분하다.
+// --config 뒤에는 어떤 파일을 config 파일로 사용할 것 인지에 대한 옵션
+```
+
+### js
+
+- npm install -D babel-loader 설치
+
+### css
+
+```
+npm i style-loader css-loader sass sass-loader -D
+```
+
+- sass: sass 패키지
+- sass-loader: sass 를 webpack 에서 사용가능하도록 해주는 패키지
+- css-loader: @import, url() 을 해석
+- style-loader: css를 DOM 에 주입
+
+#### 사용법1
+
+- entry 파일(js파일) 에 scss 파일을 import
+
+```js
+import ../scss/styles.scss
+```
+
+- webpack이 해석하는 순서의 역순으로 loader 들을 나열.
+- head에 css가 inline 으로 들어간다.
+
+#### 🧤🧤🧤 사용법2
+
+- css파일을 분리하여 사용하기 원할경우 style-loader 사용 X, mini-css-extract-plugin 를 사용!
+
+```
+npm install --save-dev mini-css-extract-plugin
+```
+
+### 총정리 코드
+
+```js
+// main.js (엔트리 파일)
+import '../css/styles.scss';
+```
+
+```js
+// webpack.config.js
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // css 파일로 분리 플러그인
+
+module.exports = {
+  mode: 'development', // 모드 (개발시: development, 실서비스: production)
+  watch: true, // 워치모드
+  entry: './src/client/js/main.js', // 엔트리
+  output: {
+    path: path.join(__dirname, 'assets'),
+    filename: 'js/main.js',
+    clean: true, // 하나로 모으기전에 파일을 청소(삭제)
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'css/styles.css',
+    }),
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+        },
+      },
+      {
+        test: /\.scss$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+      },
+    ],
+  },
+};
+```
+
+## 배포
+
+1. express => babel-cli 이용
+
+```json
+"build:server": "babel src -d build",
+```
+
+2. 프론트 엔드 => webpack 사용
+
+```json
+// --mode 속성을 명령어로 준다
+"build:assets": "webpack --mode=production",
+"dev:assets": "webpack --mode=development"
+```
+
+3. heroku 업로드시 build 명령어 추가
+
+```json
+"build": "npm run build:server && npm run build assets",
+```
+
+4. 몽고db => 몽고db atlas 이용 => 네이티브 드라이브 선택
+
+5. heroku setting => Config Vars 에서 환경변수(env) 세팅
 
 ## 참고
 
