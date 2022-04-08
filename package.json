@@ -1,9 +1,6 @@
 {
   "name": "youtube-1",
   "version": "1.0.0",
-  "engines": {
-    "node": "17.x"
-  },
   "description": "## routes",
   "main": "index.js",
   "scripts": {
@@ -49,6 +46,7 @@
     "babel-loader": "^8.2.4",
     "babel-plugin-module-resolver": "^4.1.0",
     "css-loader": "^6.7.1",
+    "file-loader": "^6.2.0",
     "mini-css-extract-plugin": "^2.6.0",
     "nodemon": "^2.0.15",
     "sass": "^1.49.11",
