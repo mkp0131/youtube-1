@@ -1,18 +1,15 @@
 {
   "name": "youtube-1",
-  "engines": {
-    "node": "17.x"
-  },
   "version": "1.0.0",
   "description": "## routes",
   "main": "index.js",
   "scripts": {
     "start": "node build/server.js",
     "build": "npm run build:server && npm run build:assets",
-    "dev:server": "nodemon",
-    "dev:assets": "webpack --mode=development",
     "build:server": "babel src -d build",
-    "build:assets": "webpack --mode=production"
+    "build:assets": "webpack --mode=production",
+    "dev:server": "nodemon",
+    "dev:assets": "webpack --mode=development -w"
   },
   "repository": {
     "type": "git",

@@ -42,7 +42,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/static', express.static('assets'));
 
 app.set('view engine', 'pug');
-app.set('views', './src/views');
+app.set('views', process.cwd() + '/src/views');
 
 app.use(routes.home, globalRouter);
 app.use(routes.user, userRouter);
