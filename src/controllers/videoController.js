@@ -1,6 +1,6 @@
 import Comment from 'models/Comment';
 import User from 'models/User';
-import Video from 'models/video';
+import Video from 'models/Video';
 import routes from 'routes';
 
 export const home = async (req, res) => {
