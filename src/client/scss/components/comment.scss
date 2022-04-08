@@ -1,0 +1,36 @@
+.comment {
+  display: grid;
+  grid-template-columns: 40px auto;
+  gap: 1em;
+  .comment-creator-photo {
+    img {
+      overflow: hidden;
+      border-radius: 50%;
+    }
+  }
+  .comment-txt-container {
+    padding-top: 0.25em;
+    .comment-creator-name {
+      margin-bottom: 0.5em;
+      display: flex;
+      gap: 1em;
+      .comment-createdat {
+        font-size: 0.85rem;
+        opacity: 0.5;
+      }
+    }
+  }
+
+  .btn-delete {
+    color: $color1;
+    border: none;
+    background: none;
+    padding: 0;
+  }
+}
+
+.commets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}

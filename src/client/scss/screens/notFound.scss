@@ -1,0 +1,17 @@
+.not-found-container {
+  width: 100vw;
+  height: 100vh;
+  background: $bg;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  text-align: center;
+  gap: 0.5em;
+  a {
+    font-size: 1rem;
+    color: $color1;
+    text-decoration: underline;
+  }
+}

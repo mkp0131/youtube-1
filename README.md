@@ -351,6 +351,8 @@ module.exports = {
 
 5. heroku setting => Config Vars 에서 환경변수(env) 세팅
 
+6. 파일저장 => aws s3
+
 ## 참고
 
 ### hexadecimal 16진수

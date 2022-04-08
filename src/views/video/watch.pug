@@ -1,4 +1,6 @@
 extends ../base
+include ../mixins/comment
+
 block content
   .watch__inner
     .watch__video-play-container#videoContainer(data-video-id=video._id)
@@ -27,13 +29,40 @@ block content
       .video-info__title=video.title 
       .video-info__info 
         .video-info__views 조회수 #{video.meta.views}회
-        .video-info__createdat #{video.createdAt}
-
+        .video-info__createdat #{new Date(video.createdAt).toLocaleDateString("ko-kr", {year: 'numeric', month: 'long', day: 'numeric'})}
     .watch__video-info-container.inner
+      .video-creator-container 
+        .creator-photo 
+          img(src=`${video.creator.photoUrl || noProfile}`)
+        | #{video.creator.displayName || noDisplayName}
       .video-info-description=video.description
 
+    .comments-container
+      if(isLoggedIn)
+        .comment-form-contianer 
+          .comment-photo 
+            img(src=`${currentUser.photoUrl || noProfile}`)
+          .comment-form
+            h3 댓글 작성
+            form(method="POST")#commentForm
+              input(type="hidden", name="videoId"  value=`${video._id}`
+              )
+              input(type="hidden", name="photoUrl"  value=`${video.creator.photoUrl || noProfile}`
+              )
+              input(type="hidden", name="displayName" value=`${video.creator.displayName || noDisplayName}`
+              )
+              input(type="text" name="comment" autocomplete="off" max="200")
+              button(type="submit") 댓글
+
+
+      ul.commets-list#commentList
+        each comment in video.comments
+          +comment(comment)
+        else
+          li.no-list 등록된 댓글이 없습니다.
+
     ul.watch__video-edit-container
-      if(String(video.creator )=== String(currentUser._id))
+      if(String(video.creator._id)=== String(currentUser._id))
         li 
           a(href=`${routes.editVideo(video.id)}`) Edit Video 
         li 
@@ -41,3 +70,4 @@ block content
 
 block scripts
   script(src="/static/js/videoPlayer.js") 
+  script(src="/static/js/comment.js") 

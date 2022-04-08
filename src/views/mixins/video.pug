@@ -8,6 +8,7 @@ mixin video(video)
         .video__info__sub
           .video__creator
             .creator-photo
-            | #{video.creator.displayName}
-          .video__views #{video.meta.views} 회
+              img(src=`${video.creator.photoUrl || noProfile}`)
+            | #{video.creator.displayName || noDisplayName}
+          .video__views 조회수 #{video.meta.views} 회
 

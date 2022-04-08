@@ -81,8 +81,12 @@ export const logout = async (req, res) => {
   return res.redirect('/');
 };
 
-export const getProfile = (req, res) => {
-  res.render('user/profile');
+export const getProfile = async (req, res) => {
+  const user = await User.findById(req.session.currentUser._id).populate({
+    path: 'videos',
+    populate: { path: 'creator', select: 'photoUrl displayName' },
+  });
+  return res.render('user/profile', { userInfo: user });
 };
 
 export const getEditProfile = async (req, res) => {
@@ -95,27 +99,28 @@ export const postEditProfile = async (req, res) => {
       currentUser: { _id },
     },
     body: { displayName },
-    file: { path: photoUrl },
   } = req;
 
-  let user;
   try {
-    user = await User.findByIdAndUpdate(_id, {
-      displayName,
-      photoUrl: '/' + photoUrl,
-    }).setOptions({ runValidators: true });
+    let user = await User.findById(_id);
+    user.displayName = displayName;
+    if (req.file) {
+      // if (user.photoUrl.startWith('/')) {
+      await unlinkAsync(user.photoUrl);
+      // }
+      user.photoUrl = '/' + req.file.path;
+    }
+    user = await user.save();
+    req.session.currentUser = user;
   } catch (error) {
-    return res.render('user/profile', {
+    console.log(error);
+    return res.render('user/editProfile', {
       pageTitle: 'Edit Profile',
       errMsg: error._message,
     });
   }
 
-  if (user) {
-    req.session.currentUser = user;
-  }
-
-  return res.redirect(`${routes.user}${routes.editProfile}`);
+  return res.redirect(`${routes.home}${routes.editProfile}`);
 };
 
 export const startGithubLogin = async (req, res) => {
@@ -228,4 +233,46 @@ export const finishGithubLogin = async (req, res) => {
   }
 
   return res.redirect('/');
+};
+
+export const getEditPassword = async (req, res) => {
+  res.render('user/editPassword');
+};
+
+export const postEditPassword = async (req, res) => {
+  const {
+    session: {
+      currentUser: { _id },
+    },
+    body: { prevPassword, password, password2 },
+  } = req;
+
+  const user = await User.findOne({ _id });
+  if (!user) {
+    return res.status(400).render('user/password', {
+      pageTitle: '패스워드',
+      errMsg: '아이디가 없습니다.',
+    });
+  }
+
+  const comparePassword = await bcrypt.compare(prevPassword, user.password);
+
+  if (comparePassword !== true) {
+    return res.status(400).render('user/password', {
+      pageTitle: '패스워드',
+      errMsg: '비밀번호가 맞지 않습니다.',
+    });
+  }
+
+  if (password !== password2) {
+    return res.status(400).render('user/password', {
+      pageTitle: '패스워드',
+      errMsg: '비밀번호가 맞지 않습니다.',
+    });
+  }
+
+  user.password = password;
+  user.save();
+
+  return res.redirect(`${routes.user}${routes.profile}`);
 };

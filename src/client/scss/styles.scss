@@ -7,9 +7,11 @@
 @import './components/header';
 @import './components/footer';
 @import './components/video';
+@import './components/comment';
 
 // screens
 @import './screens/login';
 @import './screens/watch';
 @import './screens/upload';
 @import './screens/profile';
+@import './screens/notFound';

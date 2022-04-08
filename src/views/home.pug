@@ -5,5 +5,7 @@ block content
   ul.video-grid.inner
     each video in videos
       +video(video)
+    else
+      li.no-list(style="grid-column: 1/5;") 등록된 비디오가 없습니다.
 
       

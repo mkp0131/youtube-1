@@ -15,11 +15,26 @@
       margin-bottom: 0.5em;
     }
     .video__info__sub {
-      opacity: 0.5;
       font-size: 12px;
       display: flex;
       flex-direction: column;
       gap: 0.5em;
+      .video__creator {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        margin-top: 0.5em;
+        .creator-photo {
+          width: 30px;
+          height: 30px;
+          overflow: hidden;
+          border-radius: 50%;
+        }
+      }
+      .video__views {
+        text-align: right;
+        opacity: 0.5;
+      }
     }
   }
 }

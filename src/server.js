@@ -1,4 +1,4 @@
-import regeneratorRuntime from 'regenerator-runtime';
+import 'regenerator-runtime';
 import 'dotenv/config';
 import express from 'express';
 import morgan from 'morgan';
@@ -30,6 +30,8 @@ app.use(
 // form 전송시 사용!
 // html form 을 해석해서 JS object 로 생성
 app.use(bodyParser.urlencoded({ extended: false }));
+// json 객체 해석
+app.use(express.json());
 
 // 전역변수 설정
 app.use(localMiddleware);

@@ -4,6 +4,7 @@
   justify-content: center;
   gap: 1em;
   margin-top: 2em;
+  margin-bottom: 6em;
   a {
     width: 100px;
     height: 80px;
@@ -16,5 +17,28 @@
     i {
       font-size: 22px;
     }
+  }
+}
+
+.profile-form-container {
+  max-width: 529px;
+  margin: 0 auto;
+  .profile-name {
+    input {
+      pointer-events: visible;
+      outline: none;
+      border-bottom: 1px solid $color2;
+    }
+  }
+  button[type='submit'] {
+    margin-top: 1em;
+    background: #ff0100;
+    color: #fff;
+    border: none;
+    padding: 1em;
+    border-radius: 4px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    width: 100%;
   }
 }

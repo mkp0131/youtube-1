@@ -1,25 +1,17 @@
 extends ../base
 block content
-  .form-container.inner
+  .ct-container.inner
     h2 프로필 수정
-    .profile-img
-      img(src=`${currentUser.photoUrl}`, width="40", height="40")
-    .btn-profile-container 
-      a(href="")
+    form(method="POST" enctype="multipart/form-data").profile-form-container
+      label.profile-img
+        img#photoImg(src=`${currentUser.photoUrl || noProfile}`)
+        input#photoInput(type="file" name="photo" accept="image/gif, image/jpeg, image/png")
         i.fa-solid.fa-pen
-        | 프로필 관리
-      a(href="")
-        i.fa-solid.fa-arrow-right-from-bracket
-        | 로그아웃
-
-
-    form(method="POST" enctype="multipart/form-data")
-      img(src=`${currentUser.photoUrl}`, width="40", height="40")
-      label 
-        input(type="file", name="photo" accept="image/png, image/jpeg")
-      input(type="text" name="displayName" placeholder="닉네임을 입력해주세요." )
+      .profile-name 
+        label 
+          input#displayNameInput(type="text" name="displayName" value=currentUser.displayName max="10" data-value=currentUser.displayName)
+          i.fa-solid.fa-pen
       button(type="submit") 변경하기
 
-    .social-login-container
-      a(href="") 비밀번호 변경
-      
+block scripts
+  script(src="/static/js/profile.js") 

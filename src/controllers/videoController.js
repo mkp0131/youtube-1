@@ -1,3 +1,4 @@
+import Comment from 'models/Comment';
 import User from 'models/User';
 import Video from 'models/video';
 import routes from 'routes';
@@ -54,8 +55,14 @@ export const postUpload = async (req, res) => {
 
 export const watch = async (req, res) => {
   const id = req.params.id;
-  console.log(id);
-  const video = await Video.findById(id);
+
+  const video = await Video.findById(id)
+    .populate('creator')
+    .populate({
+      path: 'comments',
+      populate: { path: 'creator', select: 'photoUrl displayName' },
+    });
+
   if (!video) {
     return res.render('404', {
       pageTitle: 'Video is not exist',
@@ -70,8 +77,6 @@ export const getEdit = async (req, res) => {
   const id = req.params.id;
   const video = await Video.findById(id);
 
-  console.log(String(video.creator));
-  console.log(String(req.session.currentUser._id));
   if (String(video.creator) !== String(req.session.currentUser._id)) {
     return res.status(403).redirect('/');
   }
@@ -112,6 +117,7 @@ export const postEdit = async (req, res) => {
 
 export const deleteVideo = async (req, res) => {
   const id = req.params.id;
+  const userId = req.session.currentUser._id;
 
   const video = await Video.findOne({ _id: id });
 
@@ -122,15 +128,23 @@ export const deleteVideo = async (req, res) => {
     });
   }
 
-  if (String(video.creator) !== String(req.session.currentUser._id)) {
-    console.log(String(video.creator));
-    console.log(String(req.session.currentUser._id));
+  if (String(video.creator) !== String(userId)) {
     return res.status(403).redirect('/');
   }
 
-  await Video.findOneAndDelete({ _id: id });
+  const user = await User.findOne({ _id: userId });
 
-  res.redirect('/');
+  if (!user) {
+    return res.render('404', {
+      pageTitle: 'User is not exist',
+      errMsg: 'User is not exist',
+    });
+  }
+
+  await Video.findOneAndDelete({ _id: id });
+  await user.videos.pull(id);
+  await user.save();
+  await res.redirect('/');
 };
 
 export const search = async (req, res) => {
@@ -159,4 +173,66 @@ export const registerView = async (req, res) => {
   video.meta.views = video.meta.views + 1;
   await video.save();
   return res.sendStatus(200);
+};
+
+export const writeComment = async (req, res) => {
+  const { comment, videoId } = req.body;
+
+  const video = await Video.findById(videoId);
+  if (!video) {
+    return res.sendStatus(404);
+  }
+
+  const user = await User.findById(req.session.currentUser._id);
+  if (!user) {
+    return res.sendStatus(404);
+  }
+
+  let uploadComment = await Comment.create({
+    comment,
+    creator: user._id,
+    video: video._id,
+  });
+  if (!uploadComment) {
+    return res.sendStatus(404);
+  }
+
+  video.comments.push(uploadComment);
+  video.save();
+
+  user.comments.push(uploadComment);
+  user.save();
+
+  return res.sendStatus(200);
+};
+
+export const deleteComment = async (req, res) => {
+  const { commentId, videoId } = req.body;
+  const userId = req.session.currentUser._id;
+
+  const comment = await Comment.findOne({ _id: commentId });
+  if (!comment) {
+    return res.sendStatus(404);
+  }
+  if (String(comment.creator) !== String(userId)) {
+    return res.sendStatus(403);
+  }
+
+  const user = await User.findOne({ _id: userId });
+  if (!user) {
+    return res.sendStatus(404);
+  }
+
+  const video = await Video.findOne({ _id: videoId });
+  if (!video) {
+    return res.sendStatus(404);
+  }
+
+  await Comment.findOneAndDelete({ _id: commentId });
+  await user.comments.pull(commentId);
+  await user.save();
+  await video.comments.pull(videoId);
+  await video.save();
+
+  await res.redirect('/');
 };

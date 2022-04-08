@@ -23,7 +23,7 @@ input {
   grid-template-columns: repeat(4, 2fr);
   gap: 1em;
   padding-top: 1em;
-  padding-bottom: 1em;
+  padding-bottom: 3em;
 }
 
 .form-container {
@@ -93,17 +93,72 @@ h2 {
 .ct-container {
   padding-top: 2em;
   padding-bottom: 1em;
-  max-width: 529px;
+  max-width: 769px;
 }
 
 .profile-img {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  width: 140px;
+  margin: 0 auto;
   img {
     width: 140px;
     height: 140px;
     border-radius: 50%;
     border: 1px solid $bg;
   }
+  input {
+    width: 1px;
+    height: 1px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+  }
+  i {
+    position: absolute;
+    background: $color2;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    bottom: 5%;
+    right: 0%;
+  }
+}
+.profile-name {
+  position: relative;
+  input {
+    font-size: 2.5rem;
+    text-align: center;
+    font-weight: 700;
+    margin-top: 0.5em;
+    border: none;
+    width: 100%;
+    background: transparent;
+    color: $color;
+    pointer-events: none;
+    padding: 0.5em;
+    box-sizing: border-box;
+  }
+  i {
+    position: absolute;
+    right: 1em;
+    top: 60%;
+    transform: translateY(-50%);
+    color: $color2;
+  }
+}
+
+.comments-container {
+  padding: 2em 0;
+}
+
+.no-list {
+  text-align: center;
+  opacity: 0.5;
 }

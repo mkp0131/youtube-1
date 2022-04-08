@@ -8,6 +8,8 @@ module.exports = {
     main: './src/client/js/main.js',
     videoPlayer: './src/client/js/videoPlayer.js',
     form: './src/client/js/form.js',
+    profile: './src/client/js/profile.js',
+    comment: './src/client/js/comment.js',
   }, // 엔트리
   output: {
     path: path.join(__dirname, 'assets'),
@@ -33,6 +35,15 @@ module.exports = {
       {
         test: /\.scss$/i,
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        loader: 'file-loader',
+        options: {
+          name(resourcePath, resourceQuery) {
+            return 'images/[name].[ext]';
+          },
+        },
       },
     ],
   },

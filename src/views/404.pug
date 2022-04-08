@@ -1,2 +1,15 @@
-h1 404 ERROR
-  .err-msg=errMsg
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title 404 | #{siteName}
+    link(rel="stylesheet", href="/static/css/styles.css")
+  body 
+    .not-found-container 
+      h1 404 ERROR
+      a(href="/")
+        | 사이트로 돌아가기 
+
+      

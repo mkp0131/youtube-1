@@ -1,19 +1,29 @@
 extends ../base
+include ../mixins/video
+
 block content
   .ct-container.inner
     h2 프로필
     .profile-img
-      img(src=`${currentUser.photoUrl || noProfile}`)
+      img(src=`${currentUser.photoUrl || noProfile}`)  
+    .profile-name 
+      input(type="text" value=currentUser.displayName)
     .btn-profile-container 
       a(href=`${routes.user}${routes.editProfile}`)
         i.fa-solid.fa-pen
         | 프로필 관리
-      a(href="")
-        i.fa-solid.fa-key
-        | 비밀번호 변경
+      if(currentUser.userType === 'email')
+        a(href=`${routes.user}${routes.editPassword}`)
+          i.fa-solid.fa-key
+          | 비밀번호 변경
       a(href=routes.logout)
         i.fa-solid.fa-arrow-right-from-bracket
         | 로그아웃
-
-
-      
+  
+  h2 내 동영상
+  ul.video-grid.inner
+    each video in userInfo.videos
+      +video(video)
+    else
+      li.no-list(style="grid-column: 1/5;") 동영상이 없습니다.
+    

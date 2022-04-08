@@ -17,6 +17,7 @@ const userSchema = new Schema({
   userType: { type: String, enum: ['email', 'github'], default: 'email' },
   createdAt: { type: Date, required: true, default: Date.now },
   videos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Video' }],
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
 });
 
 userSchema.pre('save', async function () {

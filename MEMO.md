@@ -58,3 +58,24 @@ middelware 를 생성하여 ㅌㅌㅌㅌㅁ막음
 # 동영상변화
 
 1. ffmpeg.wasm 패키지 설치
+
+```js
+export const s3DeleteAvatarMiddleware = (req, res, next) => {
+  if (!req.file) {
+    return next();
+  }
+  s3.deleteObject(
+    {
+      Bucket: `clonetubetest`,
+      Key: `images/${req.session.user.avatarURL.split('/')[4]}`,
+    },
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      console.log(`s3 deleteObject`, data);
+    }
+  );
+  next();
+};
+```

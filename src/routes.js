@@ -10,6 +10,7 @@ const USER = '/user';
 const PROFILE = '/profile';
 const EDIT_PROFILE = '/edit';
 const DELETE_USER = '/delete';
+const EDIT_PASSWORD = '/password';
 const GITHUB_LOGIN_START = '/github/start';
 const GITHUB_LOGIN_FINISH = '/github/finish';
 
@@ -24,6 +25,8 @@ const SEARCH_VIDEO = '/search';
 // api
 const API = '/api';
 const VIDEO_VIEWS = '/video/:id([0-9a-f]{24})/view';
+const WRITE_COMMENT = '/video/:id([0-9a-f]{24})/comment/write';
+const DELETE_COMMENT = '/video/:id([0-9a-f]{24})/comment/delete';
 
 const routes = {
   home: HOME,
@@ -61,6 +64,9 @@ const routes = {
   search: SEARCH_VIDEO,
   api: API,
   videoViews: VIDEO_VIEWS,
+  writeComment: WRITE_COMMENT,
+  deleteComment: DELETE_COMMENT,
+  editPassword: EDIT_PASSWORD,
 };
 
 export default routes;

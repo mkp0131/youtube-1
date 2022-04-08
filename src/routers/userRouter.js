@@ -4,9 +4,15 @@ import {
   getEditProfile,
   postEditProfile,
   startGithubLogin,
+  getEditPassword,
+  postEditPassword,
 } from 'controllers/userController';
 import express from 'express';
-import { photoUpload, protectorMiddleware } from 'middlewares';
+import {
+  photoUpload,
+  profileProtector,
+  protectorMiddleware,
+} from 'middlewares';
 import routes from 'routes';
 
 const userRouter = express.Router();
@@ -18,6 +24,12 @@ userRouter
   .all(protectorMiddleware)
   .get(getEditProfile)
   .post(photoUpload.single('photo'), postEditProfile);
+
+userRouter
+  .route(`${routes.editPassword}`)
+  .all(profileProtector)
+  .get(getEditPassword)
+  .post(postEditPassword);
 
 userRouter.get(`${routes.startGithubLogin}`, startGithubLogin);
 

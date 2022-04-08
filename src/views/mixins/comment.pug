@@ -1,0 +1,17 @@
+mixin comment(comment)
+  -const creator = comment.creator;
+  -const createdDate = new Date(comment.createdAt).toLocaleDateString("ko-kr", {year: 'numeric', month: 'long', day: 'numeric'})
+
+  li.comment(data-comment-id=comment._id data-video-id=comment.video).js-comment
+    .comment-creator-photo
+      img(src=`${creator.photoUrl || noProfile}`)
+    .comment-txt-container
+      .comment-creator-name
+        | #{creator.displayName || noDisplayName}
+        .comment-createdat 
+          | #{createdDate}
+        if(String(creator._id) === String(currentUser._id))
+          button.btn-delete.js-btn-delete
+            | 삭제
+      .comment-txt
+        | #{comment.comment}
