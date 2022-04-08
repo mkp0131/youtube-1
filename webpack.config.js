@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // css 파일�
 
 module.exports = {
   // mode: 'development', // 모드 (개발시: development, 실서비스: production)
-  watch: true, // 워치모드
+  // watch: true, // 워치모드
   entry: {
     main: './src/client/js/main.js',
     videoPlayer: './src/client/js/videoPlayer.js',
