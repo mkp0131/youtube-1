@@ -1,6 +1,10 @@
 {
   "name": "youtube-1",
   "version": "1.0.0",
+  "engines": {
+    "node": "17.x",
+    "npm": "8.x"
+  },
   "description": "## routes",
   "main": "index.js",
   "scripts": {
