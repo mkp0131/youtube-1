@@ -166,3 +166,12 @@ h2 {
   text-align: center;
   opacity: 0.5;
 }
+
+.err-msg {
+  background: rgb(65 65 65 / 20%);
+  padding: 1em;
+  margin-bottom: 1em;
+  text-align: center;
+  border-radius: 4px;
+  color: red;
+}
