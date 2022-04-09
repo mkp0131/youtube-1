@@ -117,10 +117,11 @@ export const s3DeleteMiddleware = (type = 'image') => {
 };
 
 export const s3DeleteVideo = (fileUrl) => {
+  const targetFile = fileUrl.replace(/.+\//, '');
   s3.deleteObject(
     {
       Bucket: `${S3_BUCKET}`,
-      Key: `${S3_VIDEO_DIRECTORY}/${fileUrl}`,
+      Key: `${S3_VIDEO_DIRECTORY}/${targetFile}`,
     },
     (err, data) => {
       if (err) {
