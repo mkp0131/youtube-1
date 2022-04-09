@@ -116,7 +116,7 @@ export const s3DeleteMiddleware = (type = 'image') => {
   };
 };
 
-export const s3DeleteVideo = async (fileUrl) => {
+export const s3DeleteVideo = (fileUrl) => {
   s3.deleteObject(
     {
       Bucket: `${S3_BUCKET}`,

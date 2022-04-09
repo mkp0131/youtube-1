@@ -142,7 +142,8 @@ export const deleteVideo = async (req, res) => {
     });
   }
 
-  await s3DeleteVideo(video.videoUrl);
+  s3DeleteVideo(video.videoUrl);
+  s3DeleteVideo(video.thumnailUrl);
   await Video.findOneAndDelete({ _id: id });
   await user.videos.pull(id);
   await user.save();
