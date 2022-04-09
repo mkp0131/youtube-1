@@ -4,7 +4,7 @@ include ../mixins/comment
 block content
   .watch__inner
     .watch__video-play-container#videoContainer(data-video-id=video._id)
-      video(src='/' + video.videoUrl)#video
+      video(src=video.videoUrl)#video
       .video-play-icon#videoPlayIcon
         i.fa-solid.fa-circle-play
       .video-play-icon#videoPlayIcon
@@ -63,8 +63,8 @@ block content
 
     ul.watch__video-edit-container
       if(String(video.creator._id)=== String(currentUser._id))
-        li 
-          a(href=`${routes.editVideo(video.id)}`) Edit Video 
+        //- li 
+        //-   a(href=`${routes.editVideo(video.id)}`) Edit Video 
         li 
           a(href=`${routes.deleteVideo(video.id)}`) Delete Video 
 

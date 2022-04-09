@@ -2,7 +2,7 @@ mixin video(video)
 
   li.video
     a(href=`${routes.video}/${video.id}`)
-      .thumnail(style=`background-image: url(/${video.thumnailUrl || noThumnail});`)
+      .thumnail(style=`background-image: url(${video.thumnailUrl || noThumnail});`)
       .video__info 
         .video__title #{video.title}
         .video__info__sub

@@ -21,6 +21,7 @@ const WATCH_VIDEO = '/:id([0-9a-f]{24})';
 const EDIT_VIDEO = '/:id([0-9a-f]{24})/edit';
 const DELETE_VIDEO = '/:id([0-9a-f]{24})/delete';
 const SEARCH_VIDEO = '/search';
+const MY_VIDEO = '/myvideo';
 
 // api
 const API = '/api';
@@ -36,6 +37,7 @@ const routes = {
   user: USER,
   profile: PROFILE,
   editProfile: EDIT_PROFILE,
+  myVideo: MY_VIDEO,
   startGithubLogin: GITHUB_LOGIN_START,
   finishGithubLogin: GITHUB_LOGIN_FINISH,
   video: VIDEO,

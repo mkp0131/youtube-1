@@ -24,8 +24,8 @@ export const postUpload = async (req, res) => {
     files: { video, thumnail },
   } = req;
 
-  const videoUrl = video[0].path;
-  const thumnailUrl = thumnail[0].path;
+  const videoUrl = video[0].location;
+  const thumnailUrl = thumnail[0].location;
 
   const creator = req.session.currentUser._id;
 

@@ -1,0 +1,12 @@
+extends ../base
+include ../mixins/video
+
+block content
+  .w-container.inner
+    h2 내 동영상
+    ul.video-grid.inner
+      each video in userInfo.videos
+        +video(video)
+      else
+        li.no-list(style="grid-column: 1/5;") 동영상이 없습니다.
+    

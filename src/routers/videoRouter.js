@@ -8,7 +8,11 @@ import {
   watch,
 } from 'controllers/videoController';
 import express from 'express';
-import { protectorMiddleware, videoUpload } from 'middlewares';
+import {
+  protectorMiddleware,
+  s3DeleteMiddleware,
+  videoUpload,
+} from 'middlewares';
 import routes from 'routes';
 
 const videoRouter = express.Router();
@@ -24,6 +28,7 @@ videoRouter
       { name: 'video', maxCount: 1 },
       { name: 'thumnail', maxCount: 1 },
     ]),
+    s3DeleteMiddleware('video'),
     postUpload
   );
 

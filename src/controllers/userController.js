@@ -84,7 +84,6 @@ export const logout = async (req, res) => {
 export const getProfile = async (req, res) => {
   const user = await User.findById(req.session.currentUser._id).populate({
     path: 'videos',
-    populate: { path: 'creator', select: 'photoUrl displayName' },
   });
   return res.render('user/profile', { userInfo: user });
 };
@@ -105,22 +104,18 @@ export const postEditProfile = async (req, res) => {
     let user = await User.findById(_id);
     user.displayName = displayName;
     if (req.file) {
-      // if (user.photoUrl.startWith('/')) {
-      await unlinkAsync(user.photoUrl);
-      // }
-      user.photoUrl = '/' + req.file.path;
+      user.photoUrl = req.file.location;
     }
     user = await user.save();
     req.session.currentUser = user;
   } catch (error) {
-    console.log(error);
     return res.render('user/editProfile', {
       pageTitle: 'Edit Profile',
       errMsg: error._message,
     });
   }
 
-  return res.redirect(`${routes.home}${routes.editProfile}`);
+  return res.redirect(`${routes.user}${routes.profile}`);
 };
 
 export const startGithubLogin = async (req, res) => {
@@ -275,4 +270,13 @@ export const postEditPassword = async (req, res) => {
   user.save();
 
   return res.redirect(`${routes.user}${routes.profile}`);
+};
+
+export const myVideo = async (req, res) => {
+  const user = await User.findById(req.session.currentUser._id).populate({
+    path: 'videos',
+    populate: { path: 'creator', select: 'photoUrl displayName' },
+  });
+
+  return res.render('user/myVideo', { userInfo: user });
 };

@@ -42,6 +42,11 @@ export const profileProtector = (req, res, next) => {
 };
 
 // S3 세팅
+const S3_BUCKET = 'ytjs';
+const S3_IMAGE_DIRECTORY = 'images';
+const S3_VIDEO_DIRECTORY = 'videos';
+const S3_ACL = 'public-read';
+
 const s3 = new aws.S3({
   credentials: {
     accessKeyId: process.env.S3_KEY,
@@ -49,9 +54,15 @@ const s3 = new aws.S3({
   },
 });
 
-const multerStorage = multerS3({
-  s3: s3,
-  bucket: 'ytjs',
+const s3ImageUpLoader = multerS3({
+  s3,
+  bucket: `${S3_BUCKET}/${S3_IMAGE_DIRECTORY}`,
+  acl: `${S3_ACL}`,
+});
+const s3VideosUpLoader = multerS3({
+  s3,
+  bucket: `${S3_BUCKET}/${S3_VIDEO_DIRECTORY}`,
+  acl: `${S3_ACL}`,
 });
 
 // 프로필 사진 업로드
@@ -60,7 +71,7 @@ export const photoUpload = multer({
   limits: {
     fileSize: 3000000,
   },
-  // storage: multerStorage,
+  storage: s3ImageUpLoader,
 });
 
 // 비디오 업로드
@@ -69,5 +80,38 @@ export const videoUpload = multer({
   limits: {
     fileSize: 10000000,
   },
-  // storage: multerStorage,
+  storage: s3VideosUpLoader,
 });
+
+// S3 파일삭제
+export const s3DeleteMiddleware = (type = 'image') => {
+  let directory = `${S3_IMAGE_DIRECTORY}`;
+  if (type === 'video') {
+    directory = `${S3_VIDEO_DIRECTORY}`;
+  }
+  return (req, res, next) => {
+    if (!req.file) {
+      return next();
+    }
+
+    const prePhotoUrl = req.session.currentUser.photoUrl;
+    if (!prePhotoUrl.includes('ytjs')) {
+      return next();
+    }
+
+    const targetFile = prePhotoUrl.replace(/.+\//, '');
+    s3.deleteObject(
+      {
+        Bucket: `${S3_BUCKET}`,
+        Key: `${directory}/${targetFile}`,
+      },
+      (err, data) => {
+        if (err) {
+          throw err;
+        }
+        console.log(`s3 deleteObject`, data);
+      }
+    );
+    next();
+  };
+};
