@@ -85,11 +85,11 @@ export const getProfile = async (req, res) => {
   const user = await User.findById(req.session.currentUser._id).populate({
     path: 'videos',
   });
-  return res.render('user/profile', { userInfo: user });
+  return res.render('user/profile', { pageTitle: 'Profile', userInfo: user });
 };
 
 export const getEditProfile = async (req, res) => {
-  res.render('user/editProfile');
+  res.render('user/editProfile', { pageTitle: 'Profile' });
 };
 
 export const postEditProfile = async (req, res) => {
@@ -231,7 +231,7 @@ export const finishGithubLogin = async (req, res) => {
 };
 
 export const getEditPassword = async (req, res) => {
-  res.render('user/editPassword');
+  res.render('user/editPassword', { pageTitle: 'Password' });
 };
 
 export const postEditPassword = async (req, res) => {
