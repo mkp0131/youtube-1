@@ -115,3 +115,18 @@ export const s3DeleteMiddleware = (type = 'image') => {
     next();
   };
 };
+
+export const s3DeleteVideo = async (fileUrl) => {
+  s3.deleteObject(
+    {
+      Bucket: `${S3_BUCKET}`,
+      Key: `${S3_VIDEO_DIRECTORY}/${fileUrl}`,
+    },
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      console.log(`s3 deleteObject`, data);
+    }
+  );
+};

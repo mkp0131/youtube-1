@@ -2,7 +2,7 @@ extends ../base
 block content
   .ct-container.inner
     h2 프로필 수정
-    form(method="POST" enctype="multipart/form-data").profile-form-container
+    form#profileForm(method="POST" enctype="multipart/form-data" ).profile-form-container
       label.profile-img
         img#photoImg(src=`${currentUser.photoUrl || noProfile}`)
         input#photoInput(type="file" name="photo" accept="image/gif, image/jpeg, image/png")

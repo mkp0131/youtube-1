@@ -1,3 +1,4 @@
+import { s3DeleteVideo } from 'middlewares';
 import Comment from 'models/Comment';
 import User from 'models/User';
 import Video from 'models/Video';
@@ -141,6 +142,7 @@ export const deleteVideo = async (req, res) => {
     });
   }
 
+  await s3DeleteVideo(video.videoUrl);
   await Video.findOneAndDelete({ _id: id });
   await user.videos.pull(id);
   await user.save();

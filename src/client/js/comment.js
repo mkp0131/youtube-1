@@ -16,6 +16,8 @@ commentForm.addEventListener('submit', async (event) => {
   const photoUrl = event.target.querySelector('input[name="photoUrl"]').value;
   const videoId = event.target.querySelector('input[name="videoId"]').value;
 
+  input.value = '';
+
   await fetch(`/api/video/${videoId}/comment/write`, {
     method: 'POST',
     headers: {
@@ -49,8 +51,6 @@ commentForm.addEventListener('submit', async (event) => {
     commentList.innerHTML = '';
   }
   commentList.prepend(li);
-
-  input.value = '';
 });
 
 commentContainers.forEach((comment) => {
@@ -59,6 +59,8 @@ commentContainers.forEach((comment) => {
   const btnDelete = comment.querySelector('.js-btn-delete');
 
   btnDelete.addEventListener('click', async () => {
+    commentList.innerHTML = '<div style="opacity: .5;">삭제 되었습니다.</div>';
+
     await fetch(`/api/video/${videoId}/comment/delete`, {
       method: 'DELETE',
       headers: {
@@ -69,7 +71,6 @@ commentContainers.forEach((comment) => {
         videoId,
       }),
     });
-    commentList.innerHTML = '<div style="opacity: .5;">삭제 되었습니다.</div>';
   });
 });
 

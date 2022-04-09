@@ -1,6 +1,7 @@
 const displayNameInput = document.getElementById('displayNameInput');
 const photoInput = document.getElementById('photoInput');
 const photoImg = document.getElementById('photoImg');
+const profileForm = document.getElementById('profileForm');
 
 // 새로고침 초기화
 photoInput.value = '';
@@ -37,4 +38,15 @@ photoInput.addEventListener('change', (event) => {
     const file = event.target.result;
     photoImg.src = file;
   };
+});
+
+let isSubmit = false;
+profileForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (isSubmit === false) {
+    isSubmit = true;
+    profileForm.querySelector('button[type="submit"]').innerHTML =
+      '처리중입니다.';
+    profileForm.submit();
+  }
 });

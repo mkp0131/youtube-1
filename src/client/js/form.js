@@ -1,4 +1,5 @@
 const fileUploadElements = document.querySelectorAll('.js-file-upload');
+const profileForm = document.getElementById('profileForm');
 
 fileUploadElements.forEach((fileUpload) => {
   const fileInput = fileUpload.querySelector('input[type="file"]');
@@ -9,4 +10,15 @@ fileUploadElements.forEach((fileUpload) => {
     fileNameElements.innerText = fileName;
     fileUpload.classList.add('on');
   });
+});
+
+let isSubmit = false;
+profileForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (isSubmit === false) {
+    isSubmit = true;
+    profileForm.querySelector('button[type="submit"]').innerHTML =
+      '처리중입니다.';
+    profileForm.submit();
+  }
 });

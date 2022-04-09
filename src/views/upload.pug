@@ -3,7 +3,7 @@ block content
   .form-container.inner
     h2 비디오 업로드
     .errMsg=errMsg
-    form(method="POST" enctype="multipart/form-data")
+    form#profileForm(method="POST" enctype="multipart/form-data")
       label.file-upload.video.js-file-upload
         input(type="file", name="video" accept="video/mp4" required)
         .file-name.js-file-name

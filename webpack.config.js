@@ -10,6 +10,7 @@ module.exports = {
     form: './src/client/js/form.js',
     profile: './src/client/js/profile.js',
     comment: './src/client/js/comment.js',
+    join: './src/client/js/join.js',
   }, // 엔트리
   output: {
     path: path.join(__dirname, 'assets'),
