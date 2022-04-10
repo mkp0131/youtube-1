@@ -63,6 +63,7 @@ const s3VideosUpLoader = multerS3({
   s3,
   bucket: `${S3_BUCKET}/${S3_VIDEO_DIRECTORY}`,
   acl: `${S3_ACL}`,
+  contentType: multerS3.AUTO_CONTENT_TYPE, // ios 대응
 });
 
 // 프로필 사진 업로드
